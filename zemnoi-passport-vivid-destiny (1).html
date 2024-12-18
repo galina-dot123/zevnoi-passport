@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор Земного Паспорта</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .result {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Калькулятор "Земного Паспорта"</h1>
+    <p>Введите вашу дату рождения:</p>
+    <input type="date" id="birthDate">
+    <br>
+    <button onclick="calculatePassport()">Рассчитать</button>
+
+    <div class="result" id="result">
+        <table>
+            <tr>
+                <th>Число</th>
+                <th>Значение</th>
+                <th>Описание</th>
+            </tr>
+            <tr>
+                <td>Число Души</td>
+                <td id="soulNumber"></td>
+                <td id="soulDescription"></td>
+            </tr>
+            <tr>
+                <td>Число Рода</td>
+                <td id="ancestralNumber"></td>
+                <td id="ancestralDescription"></td>
+            </tr>
+            <tr>
+                <td>Число Судьбы</td>
+                <td id="destinyNumber"></td>
+                <td id="destinyDescription"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function calculatePassport() {
+            const descriptions = {
+                1: "Число Лидера. Эти качества – сила воли, независимость и инициатива уже есть в вас. Активируйте их и берите ответственность за свою жизнь.",
+                2: "Число Гармонии. Способность к гармонии, дипломатии и сотрудничеству заложена в вас. Раскройте это, создавая баланс внутри и вокруг себя.",
+                3: "Число Творчества. Таланты самовыражения и коммуникации даны вам по праву рождения. Используйте их для создания и вдохновения других.",
+                4: "Число Стабильности. Ваша природа – это порядок, стабильность и надёжность. Активируйте эти качества для построения прочного фундамента.",
+                5: "Число Перемен. Свобода и адаптивность – ваши врождённые качества. Позвольте себе меняться и идти навстречу новому.",
+                6: "Число Заботы. Внутри вас есть дар любви и ответственности за близких. Раскройте его через заботу и поддержку.",
+                7: "Число Мудрости. Глубокий духовный поиск и мудрость уже присутствуют в вас. Развивайте эти качества через самопознание и внутренний рост.",
+                8: "Число Силы. Сила и способность к большим достижениям заложены в вас. Примите это и уверенно идите к своим целям.",
+                9: "Число Завершения. Ваша миссия – служение миру и завершение циклов. Используйте это качество для помощи другим и духовного роста."
+            };
+
+            const destinyDescriptions = {
+                1: "Число Судьбы – это твоя сила и лидерство. Ты пришла сюда, чтобы научиться брать ответственность и вести за собой, с каждым шагом проявляя свои сильные стороны.",
+                2: "Число Судьбы говорит о гармонии и взаимодействии. Твоя задача – научиться находить баланс в жизни и строить крепкие отношения с окружающими.",
+                3: "Число Судьбы – это творчество и самовыражение. Ты пришла в эту жизнь, чтобы раскрыть свои таланты, вдохновлять других и жить на позитивном вайбе.",
+                4: "Число Судьбы – это стабильность и структура. Тебе предстоит научиться трудолюбию и создавать устойчивый фундамент для жизни.",
+                5: "Число Судьбы – это перемены и свобода. Ты нарабатываешь умение адаптироваться, принимать новое и сохранять лёгкость.",
+                6: "Число Судьбы – это любовь и забота. Тебе нужно развивать ответственность, создавать гармоничные связи и поддерживать близких.",
+                7: "Число Судьбы – это поиск мудрости и глубины. Твой путь связан с самопознанием, духовным ростом и пониманием себя.",
+                8: "Число Судьбы – это сила и достижения. Тебе предстоит научиться управлять ресурсами, добиваться целей и использовать свою мощь во благо.",
+                9: "Число Судьбы – это служение миру. Ты нарабатываешь качества сострадания, отпускания старого и создания нового для других."
+            };
+
+            const date = document.getElementById("birthDate").value;
+
+            if (!date) {
+                alert("Пожалуйста, введите дату рождения.");
+                return;
+            }
+
+            const [year, month, day] = date.split("-").map(Number);
+
+            const soulNumber = reduceToSingleDigit(day);
+            const ancestralNumber = reduceToSingleDigit(month);
+            const sumOfDigits = reduceToSingleDigit(day + month + year);
+
+            document.getElementById("soulNumber").innerText = soulNumber;
+            document.getElementById("ancestralNumber").innerText = ancestralNumber;
+            document.getElementById("destinyNumber").innerText = sumOfDigits;
+
+            document.getElementById("soulDescription").innerText = descriptions[soulNumber];
+            document.getElementById("ancestralDescription").innerText = descriptions[ancestralNumber];
+            document.getElementById("destinyDescription").innerText = destinyDescriptions[sumOfDigits];
+            document.getElementById("result").style.display = "block";
+        }
+
+        function reduceToSingleDigit(number) {
+            while (number >= 10) {
+                number = number.toString().split("").reduce((sum, digit) => sum + Number(digit), 0);
+            }
+            return number;
+        }
+    </script>
+</body>
+</html>
